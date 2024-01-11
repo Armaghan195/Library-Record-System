@@ -25,86 +25,19 @@ struct Book
 };
 bool checker(const Book books[], int nob);
 // Function to input details for six books
-void inputBooks(Book books[], int size)
-{
-    for (int i = 0; i < size; ++i)
-    {
-        cout << "Enter details for Book " << i + 1 << ":" << endl;
-        cout << "Title: ";
-        getline(cin >> ws, books[i].title); // Allowing spaces in the title
+void inputBooks(Book books[], int size);
 
-        cout << "Author: ";
-        getline(cin >> ws, books[i].author); // Allowing spaces in the author name
-        do
-        {
-            cout << "Publication Year: ";
-            cin >> books[i].publicationYear;
-            if (books[i].publicationYear > 2024)
-            {
-                cout << "PLEASE ENTER CORRECT PUBLICATION YEAR!!! " << endl;
-
-            }
-
-        } while (books[i].publicationYear > 2024);
-
-        cout << "Genre: ";
-        getline(cin >> ws, books[i].genre); // Allowing spaces in the genre
-        cout << endl;
-    }
-}
 
 // Function to categorize books into fiction and non-fiction arrays
-void categorizeBooks(const Book books[], int size, Book fiction[], Book nonFiction[], int& fictionCount, int& nonFictionCount)
-{
-    fictionCount = nonFictionCount = 0;
+void categorizeBooks(const Book books[], int size, Book fiction[], Book nonFiction[], int& fictionCount, int& nonFictionCount);
 
-    for (int i = 0; i < size; ++i)
-    {
-        if (tolowercase(books[i].genre) == "fiction")
-        {
-            fiction[fictionCount++] = books[i];
-        }
-
-        else if (tolowercase(books[i].genre) == "nonfiction")
-        {
-            nonFiction[nonFictionCount++] = books[i];
-        }
-    }
-}
 
 // Function to find the book with the earliest publication year in each category
-Book findEarliestBook(const Book books[], int size)
-{
-    Book earliestBook = books[0];
+Book findEarliestBook(const Book books[], int size);
 
-    for (int i = 1; i < size; ++i)
-    {
-        if (books[i].publicationYear < earliestBook.publicationYear) {
-            earliestBook = books[i];
-        }
-    }
-
-    return earliestBook;
-}
 
 // Function to display details of books and the earliest published books in both categories
-void displayBooks(const Book books[], int size, const Book& earliestBook)
-{
-    for (int i = 0; i < size; ++i)
-    {
-        cout << "Title: " << books[i].title << endl;
-        cout << "Author: " << books[i].author << endl;
-        cout << "Publication Year: " << books[i].publicationYear << endl;
-        cout << "Genre: " << books[i].genre << endl;
-        cout << endl;
-    }
-
-    cout << "Earliest Published Book:" << endl;
-    cout << "Title: " << earliestBook.title << endl;
-    cout << "Author: " << earliestBook.author << endl;
-    cout << "Publication Year: " << earliestBook.publicationYear << endl;
-    cout << "Genre: " << earliestBook.genre << endl;
-}
+void displayBooks(const Book books[], int size, const Book& earliestBook);
 
 int main()
 {
@@ -115,12 +48,13 @@ int main()
     char opt;
 
     do {
+        cout << " |Welcome to Book Management System|" << endl << endl;
         cout << "Please Select an option Below: " << endl;
         cout << "(a) Enter Books Data" << endl;
         cout << "(b) Display All books" << endl;
         cout << "(c) Display Fictional books only" << endl;
         cout << "(d) Display Non-Fictional books only" << endl;
-        cout << "(e)xit" << endl;
+        cout << "(e) Exit" << endl;
         cout << "> ";
         cin >> opt;
         switch (tolower(opt))
@@ -216,4 +150,102 @@ bool checker(const Book books[], int nob)
     }
 
     return false;
+
+}
+
+void inputBooks(Book books[], int size)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        cout << "Enter details for Book " << i + 1 << ":" << endl;
+        cout << "Title: ";
+        getline(cin >> ws, books[i].title); // Allowing spaces in the title
+
+        cout << "Author: ";
+        getline(cin >> ws, books[i].author); // Allowing spaces in the author name
+        do
+        {
+            cout << "Publication Year: ";
+            cin >> books[i].publicationYear;
+            if (books[i].publicationYear > 2024)
+            {
+                cout << "PLEASE ENTER CORRECT PUBLICATION YEAR!!! " << endl;
+
+            }
+            if (books[i].publicationYear < 0)
+            {
+                cout << "PUBLICATION YEAR CANNOT BE NEGATIVE! " << endl;
+
+            }
+
+
+
+        } while (books[i].publicationYear > 2024 || books[i].publicationYear < 0);
+
+        do
+        {
+            cout << "Genre (fictional or nonfictional): ";
+            getline(cin >> ws, books[i].genre); // Allowing spaces in the genre
+            cout << endl;
+            if (tolowercase(books[i].genre) == "fictional" || tolowercase(books[i].genre) == "nonfictional")
+            {
+                break;
+            }
+            if (tolowercase(books[i].genre) != "fictional" || tolowercase(books[i].genre) != "nonfictional")
+            {
+                cout << "Please Enter Fictional or Nonfictional only!" << endl << endl;
+            }
+
+        } while (tolowercase(books[i].genre) != "fictional" || tolowercase(books[i].genre) != "nonfictional");
+    }
+}
+
+// Function to categorize books into fiction and non-fiction arrays
+void categorizeBooks(const Book books[], int size, Book fiction[], Book nonFiction[], int& fictionCount, int& nonFictionCount)
+{
+    fictionCount = nonFictionCount = 0;
+
+    for (int i = 0; i < size; ++i)
+    {
+        if (tolowercase(books[i].genre) == "fiction")
+        {
+            fiction[fictionCount++] = books[i];
+        }
+
+        else if (tolowercase(books[i].genre) == "nonfiction")
+        {
+            nonFiction[nonFictionCount++] = books[i];
+        }
+    }
+}
+Book findEarliestBook(const Book books[], int size)
+{
+    Book earliestBook = books[0];
+
+    for (int i = 1; i < size; ++i)
+    {
+        if (books[i].publicationYear < earliestBook.publicationYear) {
+            earliestBook = books[i];
+        }
+    }
+
+    return earliestBook;
+}
+
+void displayBooks(const Book books[], int size, const Book& earliestBook)
+{
+    for (int i = 0; i < size; ++i)
+    {
+        cout << "Title: " << books[i].title << endl;
+        cout << "Author: " << books[i].author << endl;
+        cout << "Publication Year: " << books[i].publicationYear << endl;
+        cout << "Genre: " << books[i].genre << endl;
+        cout << endl;
+    }
+
+    cout << "Earliest Published Book:" << endl;
+    cout << "Title: " << earliestBook.title << endl;
+    cout << "Author: " << earliestBook.author << endl;
+    cout << "Publication Year: " << earliestBook.publicationYear << endl;
+    cout << "Genre: " << earliestBook.genre << endl;
 }
